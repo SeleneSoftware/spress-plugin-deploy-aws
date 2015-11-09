@@ -31,7 +31,7 @@ class Selenesoftwarespressplugindeployaws extends Plugin
     {
         $this->io = $event->getIO();
 
-        if ($this->io->isIntercative()) {
+        if ($this->io->isInteractive()) {
             var_dump("BOO");
         }
     }
