@@ -1,0 +1,20 @@
+{
+    "name": "selene-software/spress-plugin-deploy-aws",
+    "type": "spress-plugin",
+    "description": "Deploy your site to an AWS S3 bucket for static site hosting.",
+    "keywords": ["spress", "plugin"],
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Jason Marshall",
+            "email": "selene.software.web@gmail.com"
+        }
+    ],
+    "require": {
+        "yosymfony/spress-installer": "~1.0",
+        "aws/aws-sdk-php": "^3.9"
+    },
+    "extra": {
+        "spress_name": "Selenesoftwarespressplugindeployaws"
+    }
+}
