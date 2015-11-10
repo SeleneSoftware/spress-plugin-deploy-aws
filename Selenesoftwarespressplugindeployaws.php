@@ -38,8 +38,8 @@ class Selenesoftwarespressplugindeployaws extends Plugin
 
             if($answer)
             {
-                $this->io->ask('Bucket Name: ');
-                
+                $bucket = $this->io->ask('Bucket Name: ');
+                var_dump($bucket);
             }
         }
     }
