@@ -36,7 +36,7 @@ class Selenesoftwarespressplugindeployaws extends Plugin
     public function onStart(EnvironmentEvent $event)
     {
         $this->io = $event->getIO();
-
+var_dump($event->getConfigValues());die();
         if ($this->io->isInteractive()) {
              $answer = $this->io->askConfirmation(
                 "Do you want to connect to deploy to your AWS S3 bucket? ", 
