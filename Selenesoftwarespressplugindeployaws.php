@@ -20,6 +20,12 @@ class Selenesoftwarespressplugindeployaws extends Plugin
      */
     protected $bucket;
 
+    /**
+     * Array of config options
+     * @var array
+     */
+    protected $config;
+
     public function initialize(EventSubscriber $subscriber)
     {
         $subscriber->addEventListener('spress.start', 'onStart');
@@ -36,7 +42,9 @@ class Selenesoftwarespressplugindeployaws extends Plugin
     public function onStart(EnvironmentEvent $event)
     {
         $this->io = $event->getIO();
-var_dump($event->getConfigValues());die();
+
+        $this->config = $event->getConfigRepository()->getArray();
+
         if ($this->io->isInteractive()) {
              $answer = $this->io->askConfirmation(
                 "Do you want to connect to deploy to your AWS S3 bucket? ", 
@@ -85,10 +93,10 @@ var_dump($event->getConfigValues());die();
     }
 
     public function onFinish(FinishEvent $event)
-    {var_dump($event->getPayload());die();
+    {
         if ($this->bucket) {
             $aws = ([
-                'region'  => 'us-west-2',
+                'region'  => $this->config['aws']['region'],
 		'version' => 'latest',
 		'http'    => [
 		    'connect_timeout' => 5
