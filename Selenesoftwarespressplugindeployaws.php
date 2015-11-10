@@ -32,7 +32,15 @@ class Selenesoftwarespressplugindeployaws extends Plugin
         $this->io = $event->getIO();
 
         if ($this->io->isInteractive()) {
-            var_dump("BOO");
+             $answer = $this->io->askConfirmation(
+                "Do you want to connect to deploy to your AWS S3 bucket? ", 
+                false);
+
+            if($answer)
+            {
+                $this->io->ask('Bucket Name: ');
+                
+            }
         }
     }
 
