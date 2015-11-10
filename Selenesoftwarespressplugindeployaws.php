@@ -14,6 +14,12 @@ class Selenesoftwarespressplugindeployaws extends Plugin
 {
     private $io;
 
+    /**
+     * The name of the S3 bucket to upload to
+     * @var string
+     */
+    protected $bucket;
+
     public function initialize(EventSubscriber $subscriber)
     {
         $subscriber->addEventListener('spress.start', 'onStart');
@@ -38,8 +44,7 @@ class Selenesoftwarespressplugindeployaws extends Plugin
 
             if($answer)
             {
-                $bucket = $this->io->ask('Bucket Name: ');
-                var_dump($bucket);
+                $this->bucket = $this->io->ask('Bucket Name: ');
             }
         }
     }
@@ -81,6 +86,8 @@ class Selenesoftwarespressplugindeployaws extends Plugin
 
     public function onFinish(FinishEvent $event)
     {
-
+        if ($this->bucket) {
+            var_dump($bucket);
+        }
     }
 }
