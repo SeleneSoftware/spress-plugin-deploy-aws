@@ -85,9 +85,15 @@ class Selenesoftwarespressplugindeployaws extends Plugin
     }
 
     public function onFinish(FinishEvent $event)
-    {
+    {var_dump($this);die();
         if ($this->bucket) {
-            var_dump($bucket);
+            $aws = ([
+                'region'  => 'us-west-2',
+		'version' => 'latest',
+		'http'    => [
+		    'connect_timeout' => 5
+		]
+	]);
         }
     }
 }
