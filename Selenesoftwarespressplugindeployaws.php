@@ -85,7 +85,7 @@ class Selenesoftwarespressplugindeployaws extends Plugin
     }
 
     public function onFinish(FinishEvent $event)
-    {var_dump($event);die();
+    {var_dump($event->getPayload());die();
         if ($this->bucket) {
             $aws = ([
                 'region'  => 'us-west-2',
