@@ -10,6 +10,8 @@ use Yosymfony\Spress\Plugin\Event\FinishEvent;
 use Yosymfony\Spress\Plugin\Event\RenderEvent;
 use Yosymfony\Spress\Plugin\Plugin;
 
+use Aws\S3\S3Client;
+
 class Selenesoftwarespressplugindeployaws extends Plugin
 {
     private $io;
@@ -25,6 +27,12 @@ class Selenesoftwarespressplugindeployaws extends Plugin
      * @var array
      */
     protected $config;
+
+    /**
+     * The S3 client object
+     * @var Aws\S3\S3Client
+     */
+    protected $s3;
 
     public function initialize(EventSubscriber $subscriber)
     {
@@ -47,12 +55,25 @@ class Selenesoftwarespressplugindeployaws extends Plugin
 
         if ($this->io->isInteractive()) {
              $answer = $this->io->askConfirmation(
-                "Do you want to connect to deploy to your AWS S3 bucket? ", 
+                "Do you want to deploy to your AWS S3 bucket? (y/N): ", 
                 false);
 
             if($answer)
             {
-                $this->bucket = $this->io->ask('Bucket Name: ');
+                $this->s3 = new S3Client([
+                    'region'  => $this->config['aws']['region'],
+                    'version' => 'latest',
+                    'http'    => [
+                        'connect_timeout' => 5
+                    ]
+                ]);
+                $bucket = $this->io->ask('Bucket Name (spress): ', 'spress');
+                if (!$this->s3->doesBucketExist($bucket)) {
+                    $this->io->write('Bucket does not exist.  Please use the console at http://aws.amazon.com to create it.');
+                    return;
+                } else {
+                    $this->bucket = $bucket;
+                }
             }
         }
     }
@@ -95,13 +116,7 @@ class Selenesoftwarespressplugindeployaws extends Plugin
     public function onFinish(FinishEvent $event)
     {
         if ($this->bucket) {
-            $aws = ([
-                'region'  => $this->config['aws']['region'],
-		'version' => 'latest',
-		'http'    => [
-		    'connect_timeout' => 5
-		]
-	]);
+            var_dump($this->event);
         }
     }
 }
