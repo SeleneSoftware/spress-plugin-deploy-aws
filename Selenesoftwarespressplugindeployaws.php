@@ -11,6 +11,7 @@ use Yosymfony\Spress\Plugin\Event\RenderEvent;
 use Yosymfony\Spress\Plugin\Plugin;
 
 use Aws\S3\S3Client;
+use Aws\S3\Transfer;
 
 class Selenesoftwarespressplugindeployaws extends Plugin
 {
@@ -124,7 +125,8 @@ class Selenesoftwarespressplugindeployaws extends Plugin
     public function onFinish(FinishEvent $event)
     {
         if ($this->bucket) {
-            var_dump($this->dir);
+            $manager = new Transfer($this->s3, $this->dir, 's3://' . $this->bucket);
+            $manager->transfer();
         }
     }
 }
