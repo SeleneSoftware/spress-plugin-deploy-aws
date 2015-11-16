@@ -34,6 +34,12 @@ class Selenesoftwarespressplugindeployaws extends Plugin
      */
     protected $s3;
 
+    /**
+     * Destination directory for the rendered pages
+     * @var string
+     */ 
+    protected $dir;
+
     public function initialize(EventSubscriber $subscriber)
     {
         $subscriber->addEventListener('spress.start', 'onStart');
@@ -52,6 +58,8 @@ class Selenesoftwarespressplugindeployaws extends Plugin
         $this->io = $event->getIO();
 
         $this->config = $event->getConfigRepository()->getArray();
+
+        $this->dir = $event->getDestinationDir();
 
         if ($this->io->isInteractive()) {
              $answer = $this->io->askConfirmation(
@@ -116,7 +124,7 @@ class Selenesoftwarespressplugindeployaws extends Plugin
     public function onFinish(FinishEvent $event)
     {
         if ($this->bucket) {
-            var_dump($this->event);
+            var_dump($this->dir);
         }
     }
 }
