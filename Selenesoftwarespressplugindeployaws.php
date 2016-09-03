@@ -18,19 +18,15 @@
 
 */
 
-use Symfony\Component\EventDispatcher\Event;
-use Yosymfony\Spress\Plugin\EventSubscriber;
-use Yosymfony\Spress\Plugin\Event\AfterConvertPostsEvent;
-use Yosymfony\Spress\Plugin\Event\ConvertEvent;
-use Yosymfony\Spress\Plugin\Event\EnvironmentEvent;
-use Yosymfony\Spress\Plugin\Event\FinishEvent;
-use Yosymfony\Spress\Plugin\Event\RenderEvent;
-use Yosymfony\Spress\Plugin\Plugin;
+use Yosymfony\Spress\Core\Plugin\PluginInterface;
+use Yosymfony\Spress\Core\Plugin\EventSubscriber;
+use Yosymfony\Spress\Core\Plugin\Event\EnvironmentEvent;
+use Yosymfony\Spress\Core\Plugin\Event\FinishEvent;
 
 use Aws\S3\S3Client;
 use Aws\S3\Transfer;
 
-class Selenesoftwarespressplugindeployaws extends Plugin
+class Selenesoftwarespressplugindeployaws implements PluginInterface
 {
     private $io;
 
