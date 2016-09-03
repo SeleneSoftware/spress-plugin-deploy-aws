@@ -52,14 +52,14 @@ class Selenesoftwarespressplugindeployaws implements PluginInterface
     /**
      * Destination directory for the rendered pages
      * @var string
-     */ 
+     */
     protected $dir;
 
-  public function initialize(EventSubscriber $subscriber)
-  {
-    $subscriber->addEventListener('spress.start', 'onStart');
-    $subscriber->addEventListener('spress.finish', 'onFinish');
-  }
+    public function initialize(EventSubscriber $subscriber)
+    {
+        $subscriber->addEventListener('spress.start', 'onStart');
+        $subscriber->addEventListener('spress.finish', 'onFinish');
+    }
 
     public function onStart(EnvironmentEvent $event)
     {
@@ -70,25 +70,29 @@ class Selenesoftwarespressplugindeployaws implements PluginInterface
         $this->dir = $event->getDestinationDir();
 
         if ($this->io->isInteractive()) {
-             $answer = $this->io->ask(
-                "Do you want to deploy to your AWS S3 bucket? (y/N): ", 
-                false);
+            $user_choice_deploy = $this->io->ask(
+              "Do you want to deploy to your AWS S3 bucket?",
+              false
+            );
 
-            if($answer)
-            {
-                $this->s3 = new S3Client([
-                    'region'  => $this->config['aws']['region'],
+            if ($user_choice_deploy) {
+                $this->s3 = new S3Client(
+                  [
+                    'region' => $this->config['aws']['region'],
                     'version' => 'latest',
-                    'http'    => [
-                        'connect_timeout' => 5
-                    ]
-                ]);
-                $bucket = $this->io->ask('Bucket Name (spress): ', 'spress');
-                if (!$this->s3->doesBucketExist($bucket)) {
-                    $this->io->write('Bucket does not exist.  Please use the console at http://aws.amazon.com to create it.');
+                    'http' => [
+                      'connect_timeout' => 5,
+                    ],
+                  ]
+                );
+                $this->bucket = $this->config['aws']['bucket'];
+
+                if (!$this->s3->doesBucketExist($this->bucket)) {
+                    $this->io->write(
+                      'Bucket does not exist. Please use the console at http://aws.amazon.com to create it.'
+                    );
+
                     return;
-                } else {
-                    $this->bucket = $bucket;
                 }
             }
         }
@@ -97,7 +101,7 @@ class Selenesoftwarespressplugindeployaws implements PluginInterface
     public function onFinish(FinishEvent $event)
     {
         if ($this->bucket) {
-            $manager = new Transfer($this->s3, $this->dir, 's3://' . $this->bucket);
+            $manager = new Transfer($this->s3, $this->dir, 's3://'. $this->bucket);
             $manager->transfer();
         }
     }
@@ -116,10 +120,10 @@ class Selenesoftwarespressplugindeployaws implements PluginInterface
     public function getMetas()
     {
         return [
-            'name' => 'selene-software/spress-plugin-deploy-aws',
-            'description' => 'Deploy your site to an AWS S3 bucket for static site hosting.',
-            'author' => 'Jason Marshall, Hendrik Grahl',
-            'license' => 'Apache-2.0',
+          'name' => 'selene-software/spress-plugin-deploy-aws',
+          'description' => 'Deploy your site to an AWS S3 bucket for static site hosting.',
+          'author' => 'Jason Marshall, Hendrik Grahl',
+          'license' => 'Apache-2.0',
         ];
     }
 }
