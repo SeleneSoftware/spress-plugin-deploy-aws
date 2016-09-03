@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "yosymfony/spress-installer": "~1.0",
+        "yosymfony/spress-installer": "~2.0",
         "aws/aws-sdk-php": "^3.9"
     },
     "extra": {
