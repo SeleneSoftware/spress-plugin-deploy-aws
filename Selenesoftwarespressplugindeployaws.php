@@ -28,6 +28,7 @@ use Aws\S3\Transfer;
 
 class Selenesoftwarespressplugindeployaws implements PluginInterface
 {
+    /* @var Yosymfony\Spress\Core\IO\IOInterface */
     private $io;
 
     /**
@@ -64,12 +65,12 @@ class Selenesoftwarespressplugindeployaws implements PluginInterface
     {
         $this->io = $event->getIO();
 
-        $this->config = $event->getConfigRepository()->getArray();
+        $this->config = $event->getConfigValues();
 
         $this->dir = $event->getDestinationDir();
 
         if ($this->io->isInteractive()) {
-             $answer = $this->io->askConfirmation(
+             $answer = $this->io->ask(
                 "Do you want to deploy to your AWS S3 bucket? (y/N): ", 
                 false);
 
