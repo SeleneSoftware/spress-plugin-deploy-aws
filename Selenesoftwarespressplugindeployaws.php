@@ -58,18 +58,11 @@ class Selenesoftwarespressplugindeployaws extends Plugin
      */ 
     protected $dir;
 
-    public function initialize(EventSubscriber $subscriber)
-    {
-        $subscriber->addEventListener('spress.start', 'onStart');
-        $subscriber->addEventListener('spress.before_convert', 'onBeforeConvert');
-        $subscriber->addEventListener('spress.after_convert', 'onAfterConvert');
-        $subscriber->addEventListener('spress.after_convert_posts', 'onAfterConvertPosts');
-        $subscriber->addEventListener('spress.before_render', 'onBeforeRender');
-        $subscriber->addEventListener('spress.after_render', 'onAfterRender');
-        $subscriber->addEventListener('spress.before_render_pagination', 'onBeforeRenderPagination');
-        $subscriber->addEventListener('spress.after_render_pagination', 'onAfterRenderPagination');
-        $subscriber->addEventListener('spress.finish', 'onFinish');
-    }
+  public function initialize(EventSubscriber $subscriber)
+  {
+    $subscriber->addEventListener('spress.start', 'onStart');
+    $subscriber->addEventListener('spress.finish', 'onFinish');
+  }
 
     public function onStart(EnvironmentEvent $event)
     {
@@ -102,41 +95,6 @@ class Selenesoftwarespressplugindeployaws extends Plugin
                 }
             }
         }
-    }
-
-    public function onBeforeConvert(ConvertEvent $event)
-    {
-
-    }
-
-    public function onAfterConvert(ConvertEvent $event)
-    {
-
-    }
-
-    public function onAfterConvertPosts(AfterConvertPostsEvent $event)
-    {
-
-    }
-
-    public function onBeforeRender(RenderEvent $event)
-    {
-
-    }
-
-    public function onAfterRender(RenderEvent $event)
-    {
-
-    }
-
-    public function onBeforeRenderPagination(RenderEvent $event)
-    {
-
-    }
-
-    public function onAfterRenderPagination(RenderEvent $event)
-    {
-
     }
 
     public function onFinish(FinishEvent $event)
