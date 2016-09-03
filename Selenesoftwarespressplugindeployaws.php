@@ -104,4 +104,25 @@ class Selenesoftwarespressplugindeployaws extends Plugin
             $manager->transfer();
         }
     }
+
+    /**
+     * Gets the metas of a plugin.
+     *
+     * Standard metas:
+     *   - name: (string) The name of plugin.
+     *   - description: (string) A short description of the plugin.
+     *   - author: (string) The author of the plugin.
+     *   - license: (string) The license of the plugin.
+     *
+     * @return array
+     */
+    public function getMetas()
+    {
+        return [
+            'name' => 'selene-software/spress-plugin-deploy-aws',
+            'description' => 'Deploy your site to an AWS S3 bucket for static site hosting.',
+            'author' => 'Jason Marshall, Hendrik Grahl',
+            'license' => 'Apache-2.0',
+        ];
+    }
 }

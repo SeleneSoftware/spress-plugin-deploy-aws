@@ -8,13 +8,14 @@
         {
             "name": "Jason Marshall",
             "email": "selene.software.web@gmail.com"
+        },
+        {
+            "name": "Hendrik Grahl",
+            "email": "hendrik@grahl.ch"
         }
     ],
     "require": {
         "yosymfony/spress-installer": "~2.0",
         "aws/aws-sdk-php": "^3.9"
-    },
-    "extra": {
-        "spress_name": "Selenesoftwarespressplugindeployaws"
     }
 }
