@@ -8,12 +8,20 @@ This plugin requires SDK credentials.  If you don't know what those are, talk to
 
 Once that is out of the way, time to install the plugin.  If you know how to install plugins, good for you!  If not, keep reading.  Just require the plugin in your composer.json file inside your project, then update.  Or if you are cli savvy like myself, try this:
 
-composer require "SeleneSoftware/spress-plugin-deploy-aws"
+    composer require "SeleneSoftware/spress-plugin-deploy-aws"
 
 Otherwise, the composer file:
 
-"require" {
-    "SeleneSoftware/spress-plugin-deploy-aws": "~0.1"
-}
+    "require" {
+        "SeleneSoftware/spress-plugin-deploy-aws": "~0.1"
+    }
 
-And then a composer update, and all should be set.  Spress will automaticly include the plugin in your site.  Have fun!
+And then a composer update, and all should be set.
+
+### Configuration
+
+Your config.yml needs to contain an aws section specifying region and bucket:
+
+    aws:
+        region: us-east-1
+        bucket: your-bucket

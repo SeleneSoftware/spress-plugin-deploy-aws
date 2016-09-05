@@ -18,20 +18,17 @@
 
 */
 
-use Symfony\Component\EventDispatcher\Event;
-use Yosymfony\Spress\Plugin\EventSubscriber;
-use Yosymfony\Spress\Plugin\Event\AfterConvertPostsEvent;
-use Yosymfony\Spress\Plugin\Event\ConvertEvent;
-use Yosymfony\Spress\Plugin\Event\EnvironmentEvent;
-use Yosymfony\Spress\Plugin\Event\FinishEvent;
-use Yosymfony\Spress\Plugin\Event\RenderEvent;
-use Yosymfony\Spress\Plugin\Plugin;
+use Yosymfony\Spress\Core\Plugin\PluginInterface;
+use Yosymfony\Spress\Core\Plugin\EventSubscriber;
+use Yosymfony\Spress\Core\Plugin\Event\EnvironmentEvent;
+use Yosymfony\Spress\Core\Plugin\Event\FinishEvent;
 
 use Aws\S3\S3Client;
 use Aws\S3\Transfer;
 
-class Selenesoftwarespressplugindeployaws extends Plugin
+class Selenesoftwarespressplugindeployaws implements PluginInterface
 {
+    /* @var Yosymfony\Spress\Core\IO\IOInterface */
     private $io;
 
     /**
@@ -55,19 +52,12 @@ class Selenesoftwarespressplugindeployaws extends Plugin
     /**
      * Destination directory for the rendered pages
      * @var string
-     */ 
+     */
     protected $dir;
 
     public function initialize(EventSubscriber $subscriber)
     {
         $subscriber->addEventListener('spress.start', 'onStart');
-        $subscriber->addEventListener('spress.before_convert', 'onBeforeConvert');
-        $subscriber->addEventListener('spress.after_convert', 'onAfterConvert');
-        $subscriber->addEventListener('spress.after_convert_posts', 'onAfterConvertPosts');
-        $subscriber->addEventListener('spress.before_render', 'onBeforeRender');
-        $subscriber->addEventListener('spress.after_render', 'onAfterRender');
-        $subscriber->addEventListener('spress.before_render_pagination', 'onBeforeRenderPagination');
-        $subscriber->addEventListener('spress.after_render_pagination', 'onAfterRenderPagination');
         $subscriber->addEventListener('spress.finish', 'onFinish');
     }
 
@@ -75,75 +65,65 @@ class Selenesoftwarespressplugindeployaws extends Plugin
     {
         $this->io = $event->getIO();
 
-        $this->config = $event->getConfigRepository()->getArray();
+        $this->config = $event->getConfigValues();
 
         $this->dir = $event->getDestinationDir();
 
         if ($this->io->isInteractive()) {
-             $answer = $this->io->askConfirmation(
-                "Do you want to deploy to your AWS S3 bucket? (y/N): ", 
-                false);
+            $user_choice_deploy = $this->io->ask(
+              "Do you want to deploy to your AWS S3 bucket?",
+              false
+            );
 
-            if($answer)
-            {
-                $this->s3 = new S3Client([
-                    'region'  => $this->config['aws']['region'],
+            if ($user_choice_deploy) {
+                $this->s3 = new S3Client(
+                  [
+                    'region' => $this->config['aws']['region'],
                     'version' => 'latest',
-                    'http'    => [
-                        'connect_timeout' => 5
-                    ]
-                ]);
-                $bucket = $this->io->ask('Bucket Name (spress): ', 'spress');
-                if (!$this->s3->doesBucketExist($bucket)) {
-                    $this->io->write('Bucket does not exist.  Please use the console at http://aws.amazon.com to create it.');
+                    'http' => [
+                      'connect_timeout' => 5,
+                    ],
+                  ]
+                );
+                $this->bucket = $this->config['aws']['bucket'];
+
+                if (!$this->s3->doesBucketExist($this->bucket)) {
+                    $this->io->write(
+                      'Bucket does not exist. Please use the console at http://aws.amazon.com to create it.'
+                    );
+
                     return;
-                } else {
-                    $this->bucket = $bucket;
                 }
             }
         }
     }
 
-    public function onBeforeConvert(ConvertEvent $event)
-    {
-
-    }
-
-    public function onAfterConvert(ConvertEvent $event)
-    {
-
-    }
-
-    public function onAfterConvertPosts(AfterConvertPostsEvent $event)
-    {
-
-    }
-
-    public function onBeforeRender(RenderEvent $event)
-    {
-
-    }
-
-    public function onAfterRender(RenderEvent $event)
-    {
-
-    }
-
-    public function onBeforeRenderPagination(RenderEvent $event)
-    {
-
-    }
-
-    public function onAfterRenderPagination(RenderEvent $event)
-    {
-
-    }
-
     public function onFinish(FinishEvent $event)
     {
         if ($this->bucket) {
-            $manager = new Transfer($this->s3, $this->dir, 's3://' . $this->bucket);
+            $manager = new Transfer($this->s3, $this->dir, 's3://'. $this->bucket);
             $manager->transfer();
         }
+    }
+
+    /**
+     * Gets the metas of a plugin.
+     *
+     * Standard metas:
+     *   - name: (string) The name of plugin.
+     *   - description: (string) A short description of the plugin.
+     *   - author: (string) The author of the plugin.
+     *   - license: (string) The license of the plugin.
+     *
+     * @return array
+     */
+    public function getMetas()
+    {
+        return [
+          'name' => 'selene-software/spress-plugin-deploy-aws',
+          'description' => 'Deploy your site to an AWS S3 bucket for static site hosting.',
+          'author' => 'Jason Marshall, Hendrik Grahl',
+          'license' => 'Apache-2.0',
+        ];
     }
 }
