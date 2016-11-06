@@ -1,8 +1,8 @@
 Things Still ToDo:
 
-Create the bucket - Currently, the system just quits the deployment if the bucket doesn't exist.  I wan the option of creating the bucket,
+Create the bucket - Currently, the system just quits the deployment if the bucket doesn't exist.  I want the option of creating the bucket,
 but I couldn't find it in the aws-sdk-php documentation.  I'll figure it out, though.
 
 Create DNS Record and Permission Policy - You still need to create the Route53 DNS record manually.  Same goes for the permissions on the bucket.
 
-Config Option For Bucket Name - I just haven't gotten around to it, but I want the name of thebucketto sit in the configuration file.
+Config Option For Bucket Name - I just haven't gotten around to it, but I want the name of the bucket to sit in the configuration file.
