@@ -2,6 +2,7 @@ Spress Pluging Deploy AWS S3
 ============================
 
 # CLOSED - NOT CURRENTLY IN DEVELOPMENT
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 If a pull request is offered, we might reopen this for development, but as such, it hasn't been touched in several years, and will remain so.  Selene Software is more committed to developing and using the SeleneStaticGenerator instead of Spress.  If someone wishes to take over this project, we will gladly transfer the repository under the condition that Selene Software remain listed as the original developer.
 
 A plugin to deploy your site to a bucket in AWS S3.  Simple really.  Just answer the questions, and all will be well.
